@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ubu.gii.dass.c01.DuplicatedInstanceException;
 import ubu.gii.dass.c01.Reusable;
 import ubu.gii.dass.c01.ReusablePool;
 
@@ -66,7 +67,18 @@ public class ReusablePoolTest {
 	 */
 	@Test
 	public void testReleaseReusable() {
-		fail("Not yet implemented");
+		ReusablePool pool = ReusablePool.getInstance();
+		try {
+			pool.releaseReusable(this.r1);
+			pool.releaseReusable(this.r2);
+			pool.releaseReusable(this.r3);
+		} catch (DuplicatedInstanceException e) {
+			fail(e.toString());
+		}
+		try {
+			pool.releaseReusable(this.r1);
+			fail("Released r1 twice");
+		} catch (DuplicatedInstanceException ignored) {}
 	}
 
 }
