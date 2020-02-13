@@ -8,6 +8,9 @@ import static org.junit.Assert.*;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNot;
+import org.hamcrest.core.IsNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +48,9 @@ public class ReusablePoolTest {
 	 */
 	@Test
 	public void testGetInstance() {
-		fail("Not yet implemented");
+		ReusablePool pool = ReusablePool.getInstance();
+		assertNotNull(pool);
+		assertEquals(pool, ReusablePool.getInstance());
 	}
 
 	/**
