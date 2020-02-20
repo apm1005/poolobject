@@ -1,8 +1,7 @@
 language: java
 before_install:
   - sudo apt-get -y install ant-optional
-addons:
-  apt:
-    update: true
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+jdk:
+  - openjdk8
