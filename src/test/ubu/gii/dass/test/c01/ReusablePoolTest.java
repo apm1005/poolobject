@@ -21,11 +21,12 @@ import ubu.gii.dass.c01.Reusable;
 import ubu.gii.dass.c01.ReusablePool;
 
 /**
- * @author alumno
+ * @author Rodrigo Díaz García
+ * @author Adrián Pineda Miñón
  *
  */
 public class ReusablePoolTest {
-	
+
 	private Reusable r1, r2;
 	private ReusablePool pool = ReusablePool.getInstance();
 
@@ -33,7 +34,8 @@ public class ReusablePoolTest {
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {}
+	public void setUp() throws Exception {
+	}
 
 	/**
 	 * @throws java.lang.Exception
@@ -42,11 +44,13 @@ public class ReusablePoolTest {
 	public void tearDown() throws Exception {
 		try {
 			this.pool.releaseReusable(this.r1);
-		} catch (DuplicatedInstanceException ignored) {}
-		
+		} catch (DuplicatedInstanceException ignored) {
+		}
+
 		try {
 			this.pool.releaseReusable(this.r2);
-		} catch (DuplicatedInstanceException ignored) {}
+		} catch (DuplicatedInstanceException ignored) {
+		}
 	}
 
 	/**
@@ -70,15 +74,17 @@ public class ReusablePoolTest {
 		} catch (NotFreeInstanceException e) {
 			fail(e.toString());
 		}
-		
+
 		try {
 			this.pool.acquireReusable();
 			fail("Test failed, r3 shoudn't get a Reusable object");
-		} catch (NotFreeInstanceException e) {}
+		} catch (NotFreeInstanceException e) {
+		}
 	}
 
 	/**
-	 * Test method for {@link ubu.gii.dass.c01.ReusablePool#releaseReusable(ubu.gii.dass.c01.Reusable)}.
+	 * Test method for
+	 * {@link ubu.gii.dass.c01.ReusablePool#releaseReusable(ubu.gii.dass.c01.Reusable)}.
 	 */
 	@Test
 	public void testReleaseReusable() {
@@ -86,7 +92,6 @@ public class ReusablePoolTest {
 			this.r1 = this.pool.acquireReusable();
 			this.r2 = this.pool.acquireReusable();
 		} catch (NotFreeInstanceException e) {
-			fail(e.toString());
 		}
 		try {
 			this.pool.releaseReusable(this.r1);
@@ -97,7 +102,8 @@ public class ReusablePoolTest {
 		try {
 			this.pool.releaseReusable(this.r1);
 			fail("Released r1 twice");
-		} catch (DuplicatedInstanceException ignored) {}
+		} catch (DuplicatedInstanceException ignored) {
+		}
 	}
 
 }
