@@ -26,23 +26,27 @@ import ubu.gii.dass.c01.ReusablePool;
  */
 public class ReusablePoolTest {
 	
-	private Reusable r1, r2, r3;
+	private Reusable r1, r2;
+	private ReusablePool pool = ReusablePool.getInstance();
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
-		this.r1 = new Reusable();
-		this.r2 = new Reusable();
-		this.r3 = new Reusable();
-	}
+	public void setUp() throws Exception {}
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@After
 	public void tearDown() throws Exception {
+		try {
+			this.pool.releaseReusable(this.r1);
+		} catch (DuplicatedInstanceException ignored) {}
+		
+		try {
+			this.pool.releaseReusable(this.r2);
+		} catch (DuplicatedInstanceException ignored) {}
 	}
 
 	/**
@@ -61,14 +65,14 @@ public class ReusablePoolTest {
 	@Test
 	public void testAcquireReusable() {
 		try {
-			this.r1 = ReusablePool.getInstance().acquireReusable();
-			this.r2 = ReusablePool.getInstance().acquireReusable();
+			this.r1 = this.pool.acquireReusable();
+			this.r2 = this.pool.acquireReusable();
 		} catch (NotFreeInstanceException e) {
 			fail(e.toString());
 		}
 		
 		try {
-			this.r3 = ReusablePool.getInstance().acquireReusable();
+			this.pool.acquireReusable();
 			fail("Test failed, r3 shoudn't get a Reusable object");
 		} catch (NotFreeInstanceException e) {}
 	}
@@ -78,16 +82,20 @@ public class ReusablePoolTest {
 	 */
 	@Test
 	public void testReleaseReusable() {
-		ReusablePool pool = ReusablePool.getInstance();
 		try {
-			pool.releaseReusable(this.r1);
-			pool.releaseReusable(this.r2);
-			pool.releaseReusable(this.r3);
+			this.r1 = this.pool.acquireReusable();
+			this.r2 = this.pool.acquireReusable();
+		} catch (NotFreeInstanceException e) {
+			fail(e.toString());
+		}
+		try {
+			this.pool.releaseReusable(this.r1);
+			this.pool.releaseReusable(this.r2);
 		} catch (DuplicatedInstanceException e) {
 			fail(e.toString());
 		}
 		try {
-			pool.releaseReusable(this.r1);
+			this.pool.releaseReusable(this.r1);
 			fail("Released r1 twice");
 		} catch (DuplicatedInstanceException ignored) {}
 	}
