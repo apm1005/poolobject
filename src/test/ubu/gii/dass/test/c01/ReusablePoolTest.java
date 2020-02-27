@@ -70,7 +70,10 @@ public class ReusablePoolTest {
 	public void testAcquireReusable() {
 		try {
 			this.r1 = this.pool.acquireReusable();
+			assertNotNull(this.r1);
 			this.r2 = this.pool.acquireReusable();
+			assertNotNull(this.r2);
+			assertNotNull(this.r2.util());
 		} catch (NotFreeInstanceException e) {
 			fail(e.toString());
 		}
